@@ -117,7 +117,7 @@ export function StarButton() {
       href="https://github.com/vercel-labs/ai-sdk-preview-reasoning"
       target="_blank"
       rel="noopener noreferrer"
-      className="flex items-center gap-2 text-sm text-zinc-600 dark:text-zinc-300 hover:text-zinc-700 dark:hover:text-zinc-300"
+      className="flex items-center gap-2 text-sm text-zinc-600 dark:text-zinc-300 ocean:text-zinc-300 hover:text-zinc-700 dark:hover:text-zinc-300"
     >
       <Github className="size-4" />
       <span className="hidden sm:inline">Star on GitHub</span>

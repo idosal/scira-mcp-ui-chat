@@ -17,7 +17,7 @@ const Link = ({
   return (
     <NextLink
       target="_blank"
-      className="text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300 transition-colors duration-75"
+      className="text-blue-500 hover:text-blue-600 dark:text-blue-400 ocean:text-blue-400 dark:hover:text-blue-300 ocean:hover:text-blue-300 transition-colors duration-75"
       href={href}
     >
       {children}

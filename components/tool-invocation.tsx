@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { useEffect, useState, useMemo, useCallback, memo } from "react";
+import { useEffect, useState, useMemo, useCallback, memo } from 'react';
 import {
   ChevronDownIcon,
   ChevronUpIcon,
@@ -10,23 +10,23 @@ import {
   Code,
   ArrowRight,
   Circle,
-} from "lucide-react";
-import { cn } from "@/lib/utils";
-import { HtmlResource, UiActionResult } from "@mcp-ui/client";
-import type { UseChatHelpers, Message as TMessage } from "@ai-sdk/react";
-import { nanoid } from "nanoid";
+} from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { HtmlResource, UiActionResult } from '@mcp-ui/client';
+import type { UseChatHelpers, Message as TMessage } from '@ai-sdk/react';
+import { nanoid } from 'nanoid';
 
 // Define interfaces for better type safety
 interface HtmlResourceData {
   uri: string;
-  mimeType: "text/html";
+  mimeType: 'text/html';
   text?: string;
   blob?: string;
   [key: string]: any; // Allow other fields, like id from example
 }
 
 interface ContentItemWithHtmlResource {
-  type: "resource";
+  type: 'resource';
   resource: HtmlResourceData;
 }
 
@@ -48,7 +48,7 @@ interface ToolInvocationProps {
   result: any;
   isLatestMessage: boolean;
   status: string;
-  append?: UseChatHelpers["append"];
+  append?: UseChatHelpers['append'];
 }
 
 export const ToolInvocation = memo(function ToolInvocation({
@@ -66,29 +66,29 @@ export const ToolInvocation = memo(function ToolInvocation({
   useEffect(() => {
     let processedContainer: ParsedResultContainer | null = null;
 
-    if (result && typeof result === "object" && result.content && Array.isArray(result.content)) {
+    if (result && typeof result === 'object' && result.content && Array.isArray(result.content)) {
       processedContainer = result as ParsedResultContainer;
-    } else if (typeof result === "string") {
+    } else if (typeof result === 'string') {
       try {
         const parsed = JSON.parse(result);
         if (
           parsed &&
-          typeof parsed === "object" &&
+          typeof parsed === 'object' &&
           parsed.content &&
           Array.isArray(parsed.content)
         ) {
           processedContainer = parsed as ParsedResultContainer;
         } else if (parsed) {
           console.warn(
-            "Parsed string result does not have the expected .content array structure:",
+            'Parsed string result does not have the expected .content array structure:',
             parsed
           );
         }
       } catch (error) {
         console.error(
-          "Failed to parse string result for HtmlResource:",
+          'Failed to parse string result for HtmlResource:',
           error,
-          "Input string was:",
+          'Input string was:',
           result
         );
         // Error during parsing, clear content
@@ -98,7 +98,7 @@ export const ToolInvocation = memo(function ToolInvocation({
     } else if (result !== null && result !== undefined) {
       // Result is not an object, not a string, but also not null/undefined.
       // This case implies an unexpected type for 'result'.
-      console.warn("Result has an unexpected type or structure:", result);
+      console.warn('Result has an unexpected type or structure:', result);
       // It's safest to clear content here as well.
       setHtmlResourceContents((prev) => (prev.length > 0 ? [] : prev));
       return; // Exit effect early
@@ -109,7 +109,7 @@ export const ToolInvocation = memo(function ToolInvocation({
         const newHtmlResources = processedContainer.content
           .filter(
             (item): item is ContentItemWithHtmlResource =>
-              item.type === "resource" && item.resource && item.resource.uri.startsWith("ui://")
+              item.type === 'resource' && item.resource && item.resource.uri.startsWith('ui://')
           )
           .map((item) => item.resource);
 
@@ -131,7 +131,7 @@ export const ToolInvocation = memo(function ToolInvocation({
           return prevContents; // No change to htmlResourceContents
         });
       } catch (error) {
-        console.error("Error processing content for HtmlResource:", error);
+        console.error('Error processing content for HtmlResource:', error);
         // Error during processing, clear content
         setHtmlResourceContents((prev) => (prev.length > 0 ? [] : prev));
       }
@@ -144,8 +144,8 @@ export const ToolInvocation = memo(function ToolInvocation({
   }, [result]); // Only re-run if result changes
 
   const getStatusIcon = () => {
-    if (state === "call") {
-      if (isLatestMessage && status !== "ready") {
+    if (state === 'call') {
+      if (isLatestMessage && status !== 'ready') {
         return <Loader2 className="animate-spin h-3.5 w-3.5 text-primary/70" />;
       }
       return <Circle className="h-3.5 w-3.5 fill-muted-foreground/10 text-muted-foreground/70" />;
@@ -154,19 +154,19 @@ export const ToolInvocation = memo(function ToolInvocation({
   };
 
   const getStatusClass = () => {
-    if (state === "call") {
-      if (isLatestMessage && status !== "ready") {
-        return "text-primary";
+    if (state === 'call') {
+      if (isLatestMessage && status !== 'ready') {
+        return 'text-primary';
       }
-      return "text-muted-foreground";
+      return 'text-muted-foreground';
     }
-    return "text-primary";
+    return 'text-primary';
   };
 
   const formatContent = (content: any): string => {
     try {
-      if (typeof content === "string") {
-        if (!content.trim().startsWith("{") && !content.trim().startsWith("[")) {
+      if (typeof content === 'string') {
+        if (!content.trim().startsWith('{') && !content.trim().startsWith('[')) {
           return content;
         }
         try {
@@ -182,24 +182,29 @@ export const ToolInvocation = memo(function ToolInvocation({
     }
   };
 
-  const resourceStyle = useMemo(() => ({ minHeight: 425 }), []);
+  const resourceStyle =
+    toolName == 'show_user_status'
+      ? {
+          minHeight: 695,
+        }
+      : { minHeight: 425 };
 
   const handleUiAction = useCallback(
     async (result: UiActionResult) => {
       if (append) {
-        let userMessageContent = "";
-        if (result.type === "tool") {
+        let userMessageContent = '';
+        if (result.type === 'tool') {
           userMessageContent = `Call ${result.payload.toolName} with parameters: ${JSON.stringify(
             result.payload.params
           )}`;
         }
-        if (result.type === "prompt") {
+        if (result.type === 'prompt') {
           userMessageContent = result.payload.prompt;
         }
         if (userMessageContent) {
           const newMessage: TMessage = {
             id: nanoid(),
-            role: "user",
+            role: 'user',
             content: userMessageContent,
           };
 
@@ -207,14 +212,14 @@ export const ToolInvocation = memo(function ToolInvocation({
         }
 
         return Promise.resolve({
-          status: "ok",
-          message: "User interaction requested via append",
+          status: 'ok',
+          message: 'User interaction requested via append',
         });
       } else {
-        console.warn("append function not available in ToolInvocation for UI action");
+        console.warn('append function not available in ToolInvocation for UI action');
         return Promise.resolve({
-          status: "error",
-          message: "Chat context (append) not available for UI action",
+          status: 'error',
+          message: 'Chat context (append) not available for UI action',
         });
       }
     },
@@ -235,15 +240,15 @@ export const ToolInvocation = memo(function ToolInvocation({
   return (
     <div
       className={cn(
-        "flex flex-col mb-2 rounded-md border border-border/50 overflow-hidden",
-        "bg-gradient-to-b from-background to-muted/30 backdrop-blur-sm",
-        "transition-all duration-200 hover:border-border/80 group"
+        'flex flex-col mb-2 rounded-md border border-border/50 overflow-hidden',
+        'bg-gradient-to-b from-background to-muted/30 backdrop-blur-sm',
+        'transition-all duration-200 hover:border-border/80 group'
       )}
     >
       <div
         className={cn(
-          "flex items-center gap-2.5 px-3 py-2 cursor-pointer transition-colors",
-          "hover:bg-muted/20"
+          'flex items-center gap-2.5 px-3 py-2 cursor-pointer transition-colors',
+          'hover:bg-muted/20'
         )}
         onClick={() => setIsExpanded(!isExpanded)}
       >
@@ -253,12 +258,12 @@ export const ToolInvocation = memo(function ToolInvocation({
         <div className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground flex-1">
           <span className="text-foreground font-semibold tracking-tight">{toolName}</span>
           <ArrowRight className="h-3 w-3 text-muted-foreground/50" />
-          <span className={cn("font-medium", getStatusClass())}>
-            {state === "call"
-              ? isLatestMessage && status !== "ready"
-                ? "Running"
-                : "Waiting"
-              : "Completed"}
+          <span className={cn('font-medium', getStatusClass())}>
+            {state === 'call'
+              ? isLatestMessage && status !== 'ready'
+                ? 'Running'
+                : 'Waiting'
+              : 'Completed'}
           </span>
         </div>
         <div className="flex items-center gap-2 opacity-70 group-hover:opacity-100 transition-opacity">
@@ -283,8 +288,8 @@ export const ToolInvocation = memo(function ToolInvocation({
               </div>
               <pre
                 className={cn(
-                  "text-xs font-mono p-2.5 rounded-md overflow-x-auto",
-                  "border border-border/40 bg-muted/10"
+                  'text-xs font-mono p-2.5 rounded-md overflow-x-auto',
+                  'border border-border/40 bg-muted/10'
                 )}
               >
                 {formatContent(args)}
@@ -304,8 +309,8 @@ export const ToolInvocation = memo(function ToolInvocation({
               ) : (
                 <pre
                   className={cn(
-                    "text-xs font-mono p-2.5 rounded-md overflow-x-auto max-h-[300px] overflow-y-auto",
-                    "border border-border/40 bg-muted/10"
+                    'text-xs font-mono p-2.5 rounded-md overflow-x-auto max-h-[300px] overflow-y-auto',
+                    'border border-border/40 bg-muted/10'
                   )}
                 >
                   {formatContent(result)}

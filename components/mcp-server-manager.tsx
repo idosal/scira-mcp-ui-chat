@@ -546,7 +546,7 @@ export const MCPServerManager = ({
                                                     {/* Action Button */}
                                                     <Button
                                                         size="sm"
-                                                        className="w-full gap-1.5 hover:text-black hover:dark:text-white rounded-lg"
+                                                        className="w-full gap-1.5 hover:text-black hover:dark:text-white ocean:text-white rounded-lg"
                                                         variant={isActive ? "default" : "outline"}
                                                         onClick={() => toggleServer(server.id)}
                                                     >
