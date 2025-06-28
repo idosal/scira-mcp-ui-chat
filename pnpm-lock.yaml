@@ -30,11 +30,11 @@ importers:
         specifier: ^0.17.0
         version: 0.17.0
       '@mcp-ui/client':
-        specifier: ^2.2.0
-        version: 2.2.0
+        specifier: ^2.5.1
+        version: 2.5.1(@preact/signals-core@1.10.0)
       '@mcp-ui/server':
-        specifier: ^2.2.0
-        version: 2.2.0
+        specifier: ^2.5.1
+        version: 2.5.1
       '@neondatabase/serverless':
         specifier: ^1.0.0
         version: 1.0.0
@@ -760,11 +760,11 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@mcp-ui/client@2.2.0':
-    resolution: {integrity: sha512-AJN2pguN1ZJolFtodBtMC1QMaYUiaNfrZ0UPoz8xB2+lMg5jbnskaknEG7n9JKheidzslN9xTKscvn08B6wdeQ==}
+  '@mcp-ui/client@2.5.1':
+    resolution: {integrity: sha512-CKJ2wrEZEj7BfygTScvMzy7z4difQxwN6c6WlnJAr32dsyHzpQtG+PHg+fzho1R/cADeuhkOiWjeUAV++NWs7Q==}
 
-  '@mcp-ui/server@2.2.0':
-    resolution: {integrity: sha512-mdWeT9qJtFpFNrhrY2okiUmTQGvweJYOl4/+Y9/nxoLp4rNrbS69cbQCbbqr4Gi8DoNVzKmYfVsJ48iVTNuu5Q==}
+  '@mcp-ui/server@2.5.1':
+    resolution: {integrity: sha512-XdxnW6bLIqjcI/X0YLEqlFWjhlxmndJ37JYlqTB5TB73lOuZaXO7rWFrqy9ylPoT+Gs5XwjL8ef4Pxc1sHVZVQ==}
 
   '@modelcontextprotocol/sdk@1.12.1':
     resolution: {integrity: sha512-KG1CZhZfWg+u8pxeM/mByJDScJSrjjxLc8fwQqbsS8xCjBmQfMNEBTotYdNanKekepnfRI85GtgQlctLFpcYPw==}
@@ -862,6 +862,22 @@ packages:
   '@opentelemetry/api@1.9.0':
     resolution: {integrity: sha512-3giAOQvZiH5F9bMlMiv8+GSPMeqg0dbaeo58/0SlA9sxSqZhnUtxzX9/2FzyhS9sWQf5S0GJE0AKBrFqjpeYcg==}
     engines: {node: '>=8.0.0'}
+
+  '@preact/signals-core@1.10.0':
+    resolution: {integrity: sha512-qlKeXlfqtlC+sjxCPHt6Sk0/dXBrKZVcPlianqjNc/vW263YBFiP5mRrgKpHoO0q222Thm1TdYQWfCKpbbgvwA==}
+
+  '@quilted/events@2.1.3':
+    resolution: {integrity: sha512-4fHaSLND8rmZ+tce9/4FNmG5UWTRpFtM54kOekf3tLON4ZLLnYzjjldELD35efd7+lT5+E3cdkacqc56d+kCrQ==}
+    engines: {node: '>=14.0.0'}
+
+  '@quilted/threads@3.2.0':
+    resolution: {integrity: sha512-mCkawJffVIKABSGyDidcgA9uW0hvz8OWliLVPscBNMz7HdokPpafv2i6Vc5ftFIqQNvX998XxX+tJ60+Ah1QeQ==}
+    engines: {node: '>=14.0.0'}
+    peerDependencies:
+      '@preact/signals-core': ^1.8.0
+    peerDependenciesMeta:
+      '@preact/signals-core':
+        optional: true
 
   '@radix-ui/number@1.1.1':
     resolution: {integrity: sha512-MkKCwxlXTgz6CFoJx3pCwn07GKp36+aZyu/u2Ln2VrA5DcdyCZkASEDBTd8x5whTQQL5CiYf4prXKLcgQdv29g==}
@@ -1406,6 +1422,31 @@ packages:
   '@radix-ui/rect@1.1.1':
     resolution: {integrity: sha512-HPwpGIzkl28mWyZqG52jiqDJ12waP11Pa1lGoiyUkIEuMLBP0oeK/C89esbXrxsky5we7dfd8U58nm0SgAWpVw==}
 
+  '@remote-dom/core@1.8.1':
+    resolution: {integrity: sha512-GHKNNzYu0g2feUmjWRqPsk/N82iiiFVSZypQS0zTsnvGsVtvxPG9iFrR6/LS20Sd3Vi5rcvpIV4v8J46XYgcyA==}
+    engines: {node: '>=14.0.0'}
+    peerDependencies:
+      '@preact/signals-core': ^1.3.0
+      preact: '*'
+    peerDependenciesMeta:
+      '@preact/signals-core':
+        optional: true
+      preact:
+        optional: true
+
+  '@remote-dom/polyfill@1.4.5':
+    resolution: {integrity: sha512-V1qkKIl/wXyDO0I+tQDH06cBBNyyViZF3IYorkTTBf58dorqOP5Ta51vCCWeekPgdSOPuEKvHhvu6kAaKqVgww==}
+    engines: {node: '>=14.0.0'}
+
+  '@remote-dom/react@1.2.2':
+    resolution: {integrity: sha512-PkvioODONTr1M0StGDYsR4Ssf5M0Rd4+IlWVvVoK3Zrw8nr7+5mJkgNofaj/z7i8Aep78L28PCW8/WduUt4unA==}
+    engines: {node: '>=18.0.0'}
+    peerDependencies:
+      react: ^17.0.0 || ^18.0.0
+    peerDependenciesMeta:
+      react:
+        optional: true
+
   '@rtsao/scc@1.1.0':
     resolution: {integrity: sha512-zt6OdqaDoOnJ1ZYsCYGt9YmWzDXl4vQdKTyJev62gFhRGKdx7mcT54V9KIjg+d2wi9EXsPvAPKe7i7WjfVWB8g==}
 
@@ -1550,10 +1591,16 @@ packages:
   '@types/pg@8.11.13':
     resolution: {integrity: sha512-6kXByGkvRvwXLuyaWzsebs2du6+XuAB2CuMsuzP7uaihQahshVgSmB22Pmh0vQMkQ1h5+PZU0d+Di1o+WpVWJg==}
 
+  '@types/prop-types@15.7.15':
+    resolution: {integrity: sha512-F6bEyamV9jKGAFBEmlQnesRPGOQqS2+Uwi0Em15xenOxHaf2hv6L8YCVn3rPdPJOiJfPiCnLIRyvwVaqMY3MIw==}
+
   '@types/react-dom@19.1.2':
     resolution: {integrity: sha512-XGJkWF41Qq305SKWEILa1O8vzhb3aOo3ogBlSmiqNko/WmRb6QIaweuZCXjKygVDXpzXb5wyxKTSOsmkuqj+Qw==}
     peerDependencies:
       '@types/react': ^19.0.0
+
+  '@types/react@18.3.23':
+    resolution: {integrity: sha512-/LDXMQh55EzZQ0uVAZmKKhfENivEvWz6E+EYzh+/MCjMhNsotd+ZHhBGIjFDTi6+fz0OhQQQLbTgdQIxxCsC0w==}
 
   '@types/react@19.1.2':
     resolution: {integrity: sha512-oxLPMytKchWGbnQM9O7D67uPa9paTNxO7jVoNMXgkkErULBPhPARCfkKL9ytcIJJRGjbsVwW4ugJzyFFvm/Tiw==}
@@ -2548,6 +2595,9 @@ packages:
   hast-util-whitespace@3.0.0:
     resolution: {integrity: sha512-88JUN06ipLwsnv+dVn+OIYOvAuvBMy/Qoi6O7mQHxdPXpjy+Cd6xRkWwux7DKO+4sYILtLBRIKgsdpS2gQc7qw==}
 
+  htm@3.1.1:
+    resolution: {integrity: sha512-983Vyg8NwUE7JkZ6NmOqpCZ+sh1bKv2iYTlUkzlWmA5JD2acKoxd4KVxbMmxX/85mtfdnDmTFoNKcg5DGAvxNQ==}
+
   html-url-attributes@3.0.1:
     resolution: {integrity: sha512-ol6UPyBWqsrO6EJySPz2O7ZSr856WDrEzM5zMqp+FJJLGMW35cLYmmZnl0vztAZxRUoNZJFTCohfjuIJ8I4QBQ==}
 
@@ -3352,6 +3402,11 @@ packages:
     resolution: {integrity: sha512-RmkhL8CAyCRPXCE28MMH0z2PNWQBNk2Q09ZdxM9IOOXwxwZbN+qbWaatPkdkWIKL2ZVDImrN/pK5HTRz2PcS4g==}
     engines: {node: '>= 0.8'}
 
+  react-dom@18.3.1:
+    resolution: {integrity: sha512-5m4nQKp+rZRb09LNH59GM4BxTh9251/ylbKIbpe7TpGxfJ+9kv6BLkLBXIjjspbgbnIBNqlI23tRnTWT0snUIw==}
+    peerDependencies:
+      react: ^18.3.1
+
   react-dom@19.1.0:
     resolution: {integrity: sha512-Xs1hdnE+DyKgeHJeJznQmYMIBG3TKIHJJT95Q58nHLSrElKlGQqDTR2HQ9fx5CN/Gk6Vh/kupBTDLU11/nDk/g==}
     peerDependencies:
@@ -3468,6 +3523,9 @@ packages:
 
   safer-buffer@2.1.2:
     resolution: {integrity: sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==}
+
+  scheduler@0.23.2:
+    resolution: {integrity: sha512-UOShsPwz7NrMUqhR6t0hWjFduvOzbtv7toDH1/hIrfRNIDBnnBWd0CwJTGvTpngVlmwGCdP9/Zl/tVrDqcuYzQ==}
 
   scheduler@0.26.0:
     resolution: {integrity: sha512-NlHwttCI/l5gCPR3D1nNXtWABUmBwvZpEQiD4IXSbIDq8BzLIK/7Ir5gTFSGZDUu37K5cMNp0hFtzO38sC7gWA==}
@@ -4278,14 +4336,24 @@ snapshots:
   '@img/sharp-win32-x64@0.34.1':
     optional: true
 
-  '@mcp-ui/client@2.2.0':
+  '@mcp-ui/client@2.5.1(@preact/signals-core@1.10.0)':
     dependencies:
       '@modelcontextprotocol/sdk': 1.12.1
+      '@quilted/threads': 3.2.0(@preact/signals-core@1.10.0)
+      '@remote-dom/core': 1.8.1(@preact/signals-core@1.10.0)
+      '@remote-dom/react': 1.2.2(@preact/signals-core@1.10.0)(react@18.3.1)
       react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
     transitivePeerDependencies:
+      - '@preact/signals-core'
+      - preact
       - supports-color
 
-  '@mcp-ui/server@2.2.0': {}
+  '@mcp-ui/server@2.5.1':
+    dependencies:
+      '@modelcontextprotocol/sdk': 1.12.1
+    transitivePeerDependencies:
+      - supports-color
 
   '@modelcontextprotocol/sdk@1.12.1':
     dependencies:
@@ -4368,6 +4436,18 @@ snapshots:
   '@nolyfill/is-core-module@1.0.39': {}
 
   '@opentelemetry/api@1.9.0': {}
+
+  '@preact/signals-core@1.10.0': {}
+
+  '@quilted/events@2.1.3':
+    dependencies:
+      '@preact/signals-core': 1.10.0
+
+  '@quilted/threads@3.2.0(@preact/signals-core@1.10.0)':
+    dependencies:
+      '@quilted/events': 2.1.3
+    optionalDependencies:
+      '@preact/signals-core': 1.10.0
 
   '@radix-ui/number@1.1.1': {}
 
@@ -4906,6 +4986,26 @@ snapshots:
 
   '@radix-ui/rect@1.1.1': {}
 
+  '@remote-dom/core@1.8.1(@preact/signals-core@1.10.0)':
+    dependencies:
+      '@remote-dom/polyfill': 1.4.5
+      htm: 3.1.1
+    optionalDependencies:
+      '@preact/signals-core': 1.10.0
+
+  '@remote-dom/polyfill@1.4.5': {}
+
+  '@remote-dom/react@1.2.2(@preact/signals-core@1.10.0)(react@18.3.1)':
+    dependencies:
+      '@remote-dom/core': 1.8.1(@preact/signals-core@1.10.0)
+      '@types/react': 18.3.23
+      htm: 3.1.1
+    optionalDependencies:
+      react: 18.3.1
+    transitivePeerDependencies:
+      - '@preact/signals-core'
+      - preact
+
   '@rtsao/scc@1.1.0': {}
 
   '@rushstack/eslint-patch@1.11.0': {}
@@ -5030,9 +5130,16 @@ snapshots:
       pg-protocol: 1.8.0
       pg-types: 4.0.2
 
+  '@types/prop-types@15.7.15': {}
+
   '@types/react-dom@19.1.2(@types/react@19.1.2)':
     dependencies:
       '@types/react': 19.1.2
+
+  '@types/react@18.3.23':
+    dependencies:
+      '@types/prop-types': 15.7.15
+      csstype: 3.1.3
 
   '@types/react@19.1.2':
     dependencies:
@@ -6174,6 +6281,8 @@ snapshots:
     dependencies:
       '@types/hast': 3.0.4
 
+  htm@3.1.1: {}
+
   html-url-attributes@3.0.1: {}
 
   http-errors@2.0.0:
@@ -7140,6 +7249,12 @@ snapshots:
       iconv-lite: 0.6.3
       unpipe: 1.0.0
 
+  react-dom@18.3.1(react@18.3.1):
+    dependencies:
+      loose-envify: 1.4.0
+      react: 18.3.1
+      scheduler: 0.23.2
+
   react-dom@19.1.0(react@19.1.0):
     dependencies:
       react: 19.1.0
@@ -7306,6 +7421,10 @@ snapshots:
       is-regex: 1.2.1
 
   safer-buffer@2.1.2: {}
+
+  scheduler@0.23.2:
+    dependencies:
+      loose-envify: 1.4.0
 
   scheduler@0.26.0: {}
 

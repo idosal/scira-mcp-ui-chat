@@ -12,7 +12,7 @@ import {
   Circle,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { HtmlResource, UiActionResult } from '@mcp-ui/client';
+import { ResourceRenderer, UiActionResult } from '@mcp-ui/client';
 import type { UseChatHelpers, Message as TMessage } from '@ai-sdk/react';
 import { nanoid } from 'nanoid';
 
@@ -228,7 +228,7 @@ export const ToolInvocation = memo(function ToolInvocation({
 
   const renderedHtmlResources = useMemo(() => {
     return htmlResourceContents.map((resourceData, index) => (
-      <HtmlResource
+      <ResourceRenderer
         key={resourceData.uri || `html-resource-${index}`}
         resource={resourceData}
         style={resourceStyle}
