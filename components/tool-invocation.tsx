@@ -12,7 +12,7 @@ import {
   Circle,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { ResourceRenderer, UiActionResult } from '@mcp-ui/client';
+import { UIResourceRenderer, UIActionResult } from '@mcp-ui/client';
 import type { UseChatHelpers, Message as TMessage } from '@ai-sdk/react';
 import { nanoid } from 'nanoid';
 
@@ -190,7 +190,7 @@ export const ToolInvocation = memo(function ToolInvocation({
       : { minHeight: 425 };
 
   const handleUiAction = useCallback(
-    async (result: UiActionResult) => {
+    async (result: UIActionResult) => {
       if (append) {
         let userMessageContent = '';
         if (result.type === 'tool') {
@@ -228,11 +228,11 @@ export const ToolInvocation = memo(function ToolInvocation({
 
   const renderedHtmlResources = useMemo(() => {
     return htmlResourceContents.map((resourceData, index) => (
-      <ResourceRenderer
+      <UIResourceRenderer
         key={resourceData.uri || `html-resource-${index}`}
         resource={resourceData}
         style={resourceStyle}
-        onUiAction={handleUiAction}
+        onUIAction={handleUiAction}
       />
     ));
   }, [htmlResourceContents, resourceStyle, handleUiAction]);
