@@ -30,8 +30,8 @@ importers:
         specifier: ^0.17.0
         version: 0.17.0
       '@mcp-ui/client':
-        specifier: ^4.0.0
-        version: 4.0.0(@preact/signals-core@1.10.0)
+        specifier: ^4.1.1
+        version: 4.1.1(@preact/signals-core@1.10.0)
       '@neondatabase/serverless':
         specifier: ^1.0.0
         version: 1.0.0
@@ -757,8 +757,8 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@mcp-ui/client@4.0.0':
-    resolution: {integrity: sha512-jjp77D2mJX+b4t5837JPkAZygb4tTP/PUfABRebYZiuTMRCLDOY0v3Ka8QLpuw03FxahRJRWBDZCUPYQ5Rn0dA==}
+  '@mcp-ui/client@4.1.1':
+    resolution: {integrity: sha512-vH3AgSepsSDNKbhviVAXxIzhKfgDlrUU9RaNnexiwVxzIEfndSfHjgEWf3ycXffI/pBfxucH35+Eo4OAGVlWKw==}
 
   '@modelcontextprotocol/sdk@1.12.1':
     resolution: {integrity: sha512-KG1CZhZfWg+u8pxeM/mByJDScJSrjjxLc8fwQqbsS8xCjBmQfMNEBTotYdNanKekepnfRI85GtgQlctLFpcYPw==}
@@ -4330,7 +4330,7 @@ snapshots:
   '@img/sharp-win32-x64@0.34.1':
     optional: true
 
-  '@mcp-ui/client@4.0.0(@preact/signals-core@1.10.0)':
+  '@mcp-ui/client@4.1.1(@preact/signals-core@1.10.0)':
     dependencies:
       '@modelcontextprotocol/sdk': 1.12.1
       '@quilted/threads': 3.2.0(@preact/signals-core@1.10.0)

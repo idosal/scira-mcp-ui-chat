@@ -20,7 +20,7 @@
     "@ai-sdk/react": "^1.2.12",
     "@ai-sdk/xai": "^1.2.16",
     "@daytonaio/sdk": "^0.17.0",
-    "@mcp-ui/client": "^4.0.0",
+    "@mcp-ui/client": "^4.1.1",
     "@neondatabase/serverless": "^1.0.0",
     "@radix-ui/react-accordion": "^1.2.7",
     "@radix-ui/react-avatar": "^1.1.6",
