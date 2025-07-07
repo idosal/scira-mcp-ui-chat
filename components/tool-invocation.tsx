@@ -231,7 +231,9 @@ export const ToolInvocation = memo(function ToolInvocation({
       <UIResourceRenderer
         key={resourceData.uri || `html-resource-${index}`}
         resource={resourceData}
-        style={resourceStyle}
+        htmlProps={{
+          style: resourceStyle,
+        }}
         onUIAction={handleUiAction}
       />
     ));
