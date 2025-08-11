@@ -2,7 +2,7 @@ import NextLink from "next/link";
 export const ProjectOverview = () => {
   return (
     <div className="flex flex-col items-center justify-end">
-      <h1 className="text-3xl font-semibold mb-4">MCP-UI Playground</h1>
+      <h1 className="text-3xl font-semibold mb-4">Shop UI Playground</h1>
     </div>
   );
 };

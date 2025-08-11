@@ -1,6 +1,6 @@
-import { experimental_createMCPClient as createMCPClient } from 'ai';
-
-
+import { experimental_createMCPClient as createMCPClient, Tool, ToolSet } from 'ai';
+import { jsonSchemaToZod } from 'json-schema-to-zod';
+import { z } from 'zod';
 export interface KeyValuePair {
   key: string;
   value: string;
@@ -33,8 +33,16 @@ export async function initializeMCPClients(
   let tools = {};
   const mcpClients: any[] = [];
 
+  const serversToProcess = [
+    ...mcpServers,
+    {
+      url: 'https://shop-mcp-server.liad-yosef.workers.dev/sse?store=allbirds.com',
+      type: 'sse' as const,
+    },
+  ];
+
   // Process each MCP server configuration
-  for (const mcpServer of mcpServers) {
+  for (const mcpServer of serversToProcess) {
     try {
       // All servers are handled as SSE
       const transport = {
@@ -43,7 +51,7 @@ export async function initializeMCPClients(
         headers: mcpServer.headers?.reduce((acc, header) => {
           if (header.key) acc[header.key] = header.value || '';
           return acc;
-        }, {} as Record<string, string>)
+        }, {} as Record<string, string>),
       };
 
       const mcpClient = await createMCPClient({ transport });
@@ -56,10 +64,12 @@ export async function initializeMCPClients(
       // Add MCP tools to tools object
       tools = { ...tools, ...mcptools };
     } catch (error) {
-      console.error("Failed to initialize MCP client:", error);
+      console.error('Failed to initialize MCP client:', error);
       // Continue with other servers instead of failing the entire request
     }
   }
+
+  console.log('Tools:', tools);
 
   // Register cleanup for all clients if an abort signal is provided
   if (abortSignal && mcpClients.length > 0) {
@@ -71,7 +81,7 @@ export async function initializeMCPClients(
   return {
     tools,
     clients: mcpClients,
-    cleanup: async () => await cleanupMCPClients(mcpClients)
+    cleanup: async () => await cleanupMCPClients(mcpClients),
   };
 }
 
@@ -81,7 +91,7 @@ async function cleanupMCPClients(clients: any[]): Promise<void> {
     try {
       await client.close();
     } catch (error) {
-      console.error("Error closing MCP client:", error);
+      console.error('Error closing MCP client:', error);
     }
   }
-} 
+}

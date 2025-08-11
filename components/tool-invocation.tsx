@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useMemo, useCallback, memo } from 'react';
+import { useEffect, useState, useMemo, useCallback, memo, useRef } from 'react';
 import {
   ChevronDownIcon,
   ChevronUpIcon,
@@ -12,7 +12,7 @@ import {
   Circle,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { ResourceRenderer, UiActionResult } from '@mcp-ui/client';
+import { HtmlResource, ResourceRenderer, UiActionResult } from '@mcp-ui/client';
 import type { UseChatHelpers, Message as TMessage } from '@ai-sdk/react';
 import { nanoid } from 'nanoid';
 
@@ -105,8 +105,64 @@ export const ToolInvocation = memo(function ToolInvocation({
     }
 
     if (processedContainer) {
+      console.log('processedContainer', processedContainer);
       try {
-        const newHtmlResources = processedContainer.content
+        const content = processedContainer.content;
+        if (toolName === 'search_shop_catalog' && content[0]?.type === 'text') {
+          const text = content[0].text;
+          const products = JSON.parse(text).products;
+          const newHtmlResourcesItems = products.map(
+            (product: { url: string; product_id: string }) => {
+              const productName = product.url.split('/').pop();
+              return {
+                type: 'resource',
+                resource: {
+                  uri: `ui://product/${product.product_id}`,
+                  mimeType: 'text/uri-list',
+                  text: `https://cdn.shopify.com/storefront/product.component?store_domain=allbirds.com&product_handle=${productName}`,
+                },
+              };
+            }
+          );
+          content.push(...newHtmlResourcesItems);
+        }
+        if (toolName === 'get_product_details' && content[0]?.type === 'text') {
+          const text = content[0].text;
+          const product = JSON.parse(text).product;
+          const productName = product.url.split('/').pop();
+
+          content.push({
+            type: 'resource',
+            resource: {
+              uri: `ui://product/${product.product_id}`,
+              mimeType: 'text/uri-list',
+              text: `https://cdn.shopify.com/storefront/product-details.component?store_domain=allbirds.com&product_handle=${productName}`,
+            },
+          });
+        }
+        if (toolName === 'update_cart' && content[0]?.type === 'text') {
+          const text = content[0].text;
+          const cartId = JSON.parse(text).cart.id;
+
+          content.push({
+            type: 'resource',
+            resource: {
+              uri: `ui://cart/${cartId}`,
+              mimeType: 'text/uri-list',
+              text: `https://cdn.shopify.com/storefront/global-cart.component?carts=${encodeURIComponent(
+                JSON.stringify([
+                  {
+                    shop: 'www.allbirds.com',
+                    cartId: cartId,
+                  },
+                ])
+              )}`,
+            },
+          });
+        }
+
+        console.log('content', content);
+        const newHtmlResources = content
           .filter(
             (item): item is ContentItemWithHtmlResource =>
               item.type === 'resource' && item.resource && item.resource.uri.startsWith('ui://')
@@ -187,10 +243,13 @@ export const ToolInvocation = memo(function ToolInvocation({
       ? {
           minHeight: 695,
         }
-      : { minHeight: 425 };
+      : toolName == 'get_product_details'
+      ? { minHeight: 425 }
+      : { minHeight: 0 };
 
   const handleUiAction = useCallback(
     async (result: UiActionResult) => {
+      console.log('handleUiAction', result);
       if (append) {
         let userMessageContent = '';
         if (result.type === 'tool') {
@@ -200,6 +259,31 @@ export const ToolInvocation = memo(function ToolInvocation({
         }
         if (result.type === 'prompt') {
           userMessageContent = result.payload.prompt;
+        }
+        if (result.type === 'intent') {
+          if (result.payload.intent === 'view_details') {
+            userMessageContent = `[Intent:view_details] View details for ${result.payload.params.product} from ${result.payload.params.domain}`;
+          }
+          if (result.payload.intent === 'add_to_cart') {
+            userMessageContent = `[Intent:add_to_cart] Add ${result.payload.params.product} to cart from ${result.payload.params.domain} with quantity ${result.payload.params.quantity ?? 1}`;
+          }
+          if (result.payload.intent === 'checkout') {
+            const checkoutUrl = result.payload.params.url as string;
+            const mcpProxy = new URL(checkoutUrl).searchParams.get('mcp-proxy') as string;
+            window.open(mcpProxy, '_blank');
+            // if (checkoutUrl) {
+            //   const newMessage: TMessage = {
+            //     id: nanoid(),
+            //     role: 'assistant',
+            //     content: `[iframe] ${checkoutUrl}`,
+            //   };
+
+            //   append(newMessage);
+            // }
+          }
+          if (result.payload.intent === 'link') {
+            window.open(result.payload.params.url as string, '_blank');
+          }
         }
         if (userMessageContent) {
           const newMessage: TMessage = {
@@ -226,15 +310,28 @@ export const ToolInvocation = memo(function ToolInvocation({
     [append]
   );
 
+  console.log('result', result);
+
   const renderedHtmlResources = useMemo(() => {
-    return htmlResourceContents.map((resourceData, index) => (
-      <ResourceRenderer
-        key={resourceData.uri || `html-resource-${index}`}
-        resource={resourceData}
-        style={resourceStyle}
-        onUiAction={handleUiAction}
-      />
-    ));
+    const htmlResourcesToRender: HtmlResourceData[] = [];
+    htmlResourceContents.forEach((resource) => {
+      if (!htmlResourcesToRender.find((r) => r.uri === resource.uri)) {
+        htmlResourcesToRender.push(resource);
+      }
+    });
+    if (htmlResourcesToRender.length === 1) {
+      return (
+        <ResizableIframe
+          key={htmlResourcesToRender[0].uri || `html-resource-${0}`}
+          resource={htmlResourceContents[0]}
+          style={resourceStyle}
+          handleUiAction={handleUiAction}
+        />
+      );
+    }
+    return (
+      <ResourceRendererCarousel resources={htmlResourcesToRender} handleUiAction={handleUiAction} />
+    );
   }, [htmlResourceContents, resourceStyle, handleUiAction]);
 
   return (
@@ -323,3 +420,67 @@ export const ToolInvocation = memo(function ToolInvocation({
     </div>
   );
 });
+
+function ResourceRendererCarousel({
+  resources,
+  handleUiAction,
+}: {
+  resources: HtmlResourceData[];
+  handleUiAction: (result: UiActionResult) => Promise<{ status: string; message: string }>;
+}) {
+  return (
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-2">
+      {resources.map((resource) => (
+        <ResourceRenderer
+          key={resource.uri}
+          resource={resource}
+          onUiAction={handleUiAction}
+          style={{ minHeight: 365 }}
+        />
+      ))}
+    </div>
+  );
+}
+
+function ResizableIframe({
+  resource,
+  handleUiAction,
+  style,
+  resizable = true,
+}: {
+  resource: HtmlResourceData;
+  handleUiAction: (result: UiActionResult) => Promise<{ status: string; message: string }>;
+  style: React.CSSProperties;
+  resizable?: boolean;
+}) {
+  const innerRef = useRef<HTMLIFrameElement>(null);
+
+  const onUiAction = useCallback(
+    async (
+      message:
+        | UiActionResult
+        | { type: 'ui-size-change'; payload: { height: number; width: number } }
+    ) => {
+      if (message.type === 'ui-size-change') {
+        if (innerRef.current) {
+          innerRef.current.style.height = `${message.payload.height}px`;
+          innerRef.current.style.width = `${message.payload.width}px`;
+        }
+        return;
+      } else {
+        await handleUiAction?.(message);
+      }
+    },
+    [handleUiAction]
+  );
+
+  return (
+    <HtmlResource
+      ref={innerRef}
+      key={resource.uri || `html-resource-${0}`}
+      resource={resource}
+      style={style}
+      onUiAction={onUiAction}
+    />
+  );
+}
