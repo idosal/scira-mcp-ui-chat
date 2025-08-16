@@ -663,35 +663,40 @@ export const MCPServerManager = ({
                             </div>
 
                             {newServer.type === 'sse' ? (
-                                <div className="grid gap-1.5">
-                                    <Label htmlFor="url">
-                                        Server URL
-                                    </Label>
-                                    <Input
-                                        id="url"
-                                        value={newServer.url}
-                                        onChange={(e) => setNewServer({ ...newServer, url: e.target.value })}
-                                        placeholder="https://mcp.example.com/token/sse"
-                                        className="relative z-0"
-                                    />
-                                    <p className="text-xs text-muted-foreground">
-                                        Full URL to the SSE endpoint of the MCP server
-                                    </p>
-                                    <Label htmlFor="authorization">
-                                        Authorization
-                                    </Label>
-                                     <Input
-                                        id="authorization"
-                                        value={
-                                            newServer.headers?.find(h => h.key.toLowerCase() === 'authorization')?.value.replace(/^Bearer\s+/i, '') || ''
-                                        }
-                                        onChange={(e) => handleBearerTokenChange(e.target.value)}
-                                        placeholder="<BEARER_TOKEN>"
-                                        className="relative z-0"
-                                    />
-
-
-                                </div>
+                                <>
+                                    <div className="grid gap-1.5">
+                                        <Label htmlFor="url">
+                                            Server URL
+                                        </Label>
+                                        <Input
+                                            id="url"
+                                            value={newServer.url}
+                                            onChange={(e) => setNewServer({ ...newServer, url: e.target.value })}
+                                            placeholder="https://mcp.example.com/token/sse"
+                                            className="relative z-0"
+                                        />
+                                        <p className="text-xs text-muted-foreground">
+                                            Full URL to the SSE endpoint of the MCP server
+                                        </p>
+                                    </div>
+                                    <div className="grid gap-1.5">
+                                        <Label htmlFor="authorization">
+                                            Authorization
+                                        </Label>
+                                        <Input
+                                            id="authorization"
+                                            value={
+                                                newServer.headers?.find(h => h.key.toLowerCase() === 'authorization')?.value.replace(/^Bearer\s+/i, '') || ''
+                                            }
+                                            onChange={(e) => handleBearerTokenChange(e.target.value)}
+                                            placeholder="<BEARER_TOKEN>"
+                                            className="relative z-0"
+                                        />
+                                        <p className="text-xs text-muted-foreground">
+                                            Add your Bearer token here
+                                        </p>
+                                    </div>
+                                </>
                             ) : (
                                 <>
                                     <div className="grid gap-1.5">
