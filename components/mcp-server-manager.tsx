@@ -167,7 +167,8 @@ export const MCPServerManager = ({
     const [editingHeaderIndex, setEditingHeaderIndex] = useState<number | null>(null);
     const [editedEnvValue, setEditedEnvValue] = useState<string>('');
     const [editedHeaderValue, setEditedHeaderValue] = useState<string>('');
-    
+    const [bearerToken, setBearerToken] = useState<string>("");
+
     // Add access to the MCP context for server control
     const { startServer, stopServer, updateServerStatus } = useMCP();
 
@@ -210,6 +211,24 @@ export const MCPServerManager = ({
         setNewHeader({ key: '', value: '' });
         setShowSensitiveEnvValues({});
         setShowSensitiveHeaderValues({});
+    };
+
+    // Handler for bearer token input
+    const handleBearerTokenChange = (token: string) => {
+        setNewServer((prev) => {
+            // Remove any existing Authorization header
+            const headers = (prev.headers ?? []).filter(
+            (h) => h.key.toLowerCase() !== 'authorization'
+            );
+
+            return {
+            ...prev,
+            headers: [
+                ...headers,
+                { key: 'Authorization', value: `Bearer ${token}` }
+            ]
+            };
+        });
     };
 
     const removeServer = (id: string, e: React.MouseEvent) => {
@@ -644,21 +663,40 @@ export const MCPServerManager = ({
                             </div>
 
                             {newServer.type === 'sse' ? (
-                                <div className="grid gap-1.5">
-                                    <Label htmlFor="url">
-                                        Server URL
-                                    </Label>
-                                    <Input
-                                        id="url"
-                                        value={newServer.url}
-                                        onChange={(e) => setNewServer({ ...newServer, url: e.target.value })}
-                                        placeholder="https://mcp.example.com/token/sse"
-                                        className="relative z-0"
-                                    />
-                                    <p className="text-xs text-muted-foreground">
-                                        Full URL to the SSE endpoint of the MCP server
-                                    </p>
-                                </div>
+                                <>
+                                    <div className="grid gap-1.5">
+                                        <Label htmlFor="url">
+                                            Server URL
+                                        </Label>
+                                        <Input
+                                            id="url"
+                                            value={newServer.url}
+                                            onChange={(e) => setNewServer({ ...newServer, url: e.target.value })}
+                                            placeholder="https://mcp.example.com/token/sse"
+                                            className="relative z-0"
+                                        />
+                                        <p className="text-xs text-muted-foreground">
+                                            Full URL to the SSE endpoint of the MCP server
+                                        </p>
+                                    </div>
+                                    <div className="grid gap-1.5">
+                                        <Label htmlFor="authorization">
+                                            Authorization
+                                        </Label>
+                                        <Input
+                                            id="authorization"
+                                            value={
+                                                newServer.headers?.find(h => h.key.toLowerCase() === 'authorization')?.value.replace(/^Bearer\s+/i, '') || ''
+                                            }
+                                            onChange={(e) => handleBearerTokenChange(e.target.value)}
+                                            placeholder="<BEARER_TOKEN>"
+                                            className="relative z-0"
+                                        />
+                                        <p className="text-xs text-muted-foreground">
+                                            Add your Bearer token here
+                                        </p>
+                                    </div>
+                                </>
                             ) : (
                                 <>
                                     <div className="grid gap-1.5">
